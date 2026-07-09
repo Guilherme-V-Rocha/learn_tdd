@@ -10,12 +10,12 @@ describe('RegisterProduct', () => {
       render(<Home />)
     })
 
-    it('Existe o botão novo produto', () => {
+    it('There is a "New Product" button.', () => {
       expect(
         screen.getByRole('button', { name: 'Novo Produto' }),
       ).toBeInTheDocument()
     })
-    it('Deve abrir o modal ao clicar', async () => {
+    it('Should open the modal when clicked', async () => {
       const user = userEvent.setup()
       await user.click(screen.getByRole('button', { name: 'Novo Produto' }))
       const modal = await screen.findByRole('dialog')
@@ -43,7 +43,7 @@ describe('RegisterProduct', () => {
       ).toBeInTheDocument()
     })
 
-    it('exibe erros nos campos obrigatórios vazios', async () => {
+    it('shows errors in required fields when empty', async () => {
       const user = userEvent.setup()
       render(<RegisterProduct isModalOpen={true} />)
 
@@ -65,7 +65,7 @@ describe('RegisterProduct', () => {
       ).toBeInTheDocument()
     })
 
-    it('deve cadasatrar com dados validos', async () => {
+    it('You must register using valid information.', async () => {
       const user = userEvent.setup()
 
       render(
