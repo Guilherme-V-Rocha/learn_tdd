@@ -1,45 +1,45 @@
 import saveIcon from '@/images/saveIcon.svg'
+import { registerProductSchema } from '@/schema/register-product-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
+import { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { useToastContext } from '../context/ToastContext'
 
 type RegisterProductProps = {
   isModalOpen?: boolean
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const schema = z.object({
-  name: z.string().min(4, 'O nome do produto é obrigatório'),
-  value: z.string().min(1, 'O preço do produto é obrigatório'),
-  stock: z.string().min(1, 'A quantidade em estoque é obrigatória'),
-  category: z.string().min(1, 'A categoria do produto é obrigatória'),
-  description: z.string().optional(),
-  imageUrl: z.string().optional(),
-})
+type CreateSchema = z.infer<typeof registerProductSchema>
 
-type CreateSchema = z.infer<typeof schema>
-
-export function RegisterProduct({ isModalOpen }: RegisterProductProps) {
+export function RegisterProduct({
+  isModalOpen,
+  setIsModalOpen,
+}: RegisterProductProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateSchema>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(registerProductSchema),
   })
 
   const { triggerToast } = useToastContext()
 
   function create(data: CreateSchema) {
-    console.log(data)
     triggerToast('Produto cadastrado com sucesso!', 'success')
+    handleClose()
+  }
+
+  function handleClose() {
+    setIsModalOpen(false)
   }
 
   return (
     <dialog
       open={isModalOpen}
-      // onClose={() => setIsModalOpen(false)}
       className="bg-white p-8 rounded-2xl shadow-lg justify-self-center"
     >
       <form
@@ -151,7 +151,7 @@ export function RegisterProduct({ isModalOpen }: RegisterProductProps) {
           <button
             type="button"
             className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium cursor-pointer"
-            onClick={() => {}}
+            onClick={handleClose}
           >
             Cancelar
           </button>
@@ -159,7 +159,7 @@ export function RegisterProduct({ isModalOpen }: RegisterProductProps) {
             type="submit"
             className="flex-1 bg-linear-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Image src={saveIcon} alt="" />
+            {saveIcon ? <Image src={saveIcon} alt="" /> : null}
             Cadastrar Produto
           </button>
         </div>
