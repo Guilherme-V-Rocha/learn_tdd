@@ -3,7 +3,7 @@
 import addIcon from '@/images/addIcon.svg'
 import Image from 'next/image'
 import { useState } from 'react'
-import { RegisterProduct } from './register-product'
+import { RegisterProduct } from '../register-product'
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -21,7 +21,10 @@ export default function Home() {
           </button>
         </div>
 
-        <RegisterProduct isModalOpen={isModalOpen} />
+        <RegisterProduct
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       </main>
     </div>
   )

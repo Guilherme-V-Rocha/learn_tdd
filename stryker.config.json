@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "jest",
+  "jest": {
+    "projectType": "custom",
+    "configFile": "jest.config.ts",
+    "enableFindRelatedTests": true
+  },
+  "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
+  "coverageAnalysis": "perTest",
+  "tsconfigFile": "tsconfig.json",
+  "mutate": [
+    "src/register-product/**/*.ts",
+    "src/register-product/**/*.tsx",
+    "!src/register-product/**/*.test.ts",
+    "!src/register-product/**/*.test.tsx",
+    "!src/register-product/**/*.spec.ts",
+    "!src/register-product/**/*.spec.tsx"
+  ],
+  "checkers": ["typescript"],
+  "disableTypeChecks": "src/app/**/*.{js,ts,jsx,tsx}",
+  "thresholds": {
+    "high": 85,
+    "low": 70,
+    "break": 60
+  },
+  "concurrency": 2
+}

@@ -1,8 +1,8 @@
-import { ToastProvider } from '@/app/context/ToastContext'
 import Home from '@/app/page'
-import { RegisterProduct } from '@/app/register-product'
+import { ToastProvider } from '@/context/ToastContext'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { RegisterProduct } from './register-product'
 
 describe('RegisterProduct', () => {
   describe('Home', () => {
@@ -15,8 +15,26 @@ describe('RegisterProduct', () => {
         screen.getByRole('button', { name: 'Novo Produto' }),
       ).toBeInTheDocument()
     })
+    it('Should not show the modal when the page loads', () => {
+      const modal = screen.queryByRole('dialog')
+      expect(modal).not.toBeInTheDocument()
+    })
+    it('Should close the modal when clicking "Cancelar"', async () => {
+      const user = userEvent.setup()
+      const setIsModalOpenMock = jest.fn()
+      render(
+        <RegisterProduct
+          isModalOpen={true}
+          setIsModalOpen={setIsModalOpenMock}
+        />,
+      )
+      await user.click(screen.getByRole('button', { name: 'Cancelar' }))
+      expect(setIsModalOpenMock).toHaveBeenCalledTimes(1)
+      expect(setIsModalOpenMock).toHaveBeenCalledWith(false)
+    })
     it('Should open the modal when clicked', async () => {
       const user = userEvent.setup()
+
       await user.click(screen.getByRole('button', { name: 'Novo Produto' }))
       const modal = await screen.findByRole('dialog')
       expect(modal).toBeInTheDocument()
@@ -25,7 +43,13 @@ describe('RegisterProduct', () => {
 
   describe('form product', () => {
     it('shows the form to register a product', () => {
-      render(<RegisterProduct isModalOpen={true} />)
+      const setIsModalOpenMock = jest.fn()
+      render(
+        <RegisterProduct
+          isModalOpen={true}
+          setIsModalOpen={setIsModalOpenMock}
+        />,
+      )
 
       expect(screen.getByLabelText('Nome do Produto*')).toBeInTheDocument()
       expect(screen.getByLabelText('Preço*')).toBeInTheDocument()
@@ -45,7 +69,13 @@ describe('RegisterProduct', () => {
 
     it('shows errors in required fields when empty', async () => {
       const user = userEvent.setup()
-      render(<RegisterProduct isModalOpen={true} />)
+      const setIsModalOpenMock = jest.fn()
+      render(
+        <RegisterProduct
+          isModalOpen={true}
+          setIsModalOpen={setIsModalOpenMock}
+        />,
+      )
 
       await user.click(
         screen.getByRole('button', { name: 'Cadastrar Produto' }),
@@ -65,14 +95,20 @@ describe('RegisterProduct', () => {
       ).toBeInTheDocument()
     })
 
-    it('You must register using valid information.', async () => {
+    it('Should close the modal after registering with valid data', async () => {
       const user = userEvent.setup()
+
+      const setIsModalOpenMock = jest.fn()
 
       render(
         <ToastProvider>
-          <RegisterProduct isModalOpen={true} />
+          <RegisterProduct
+            isModalOpen={true}
+            setIsModalOpen={setIsModalOpenMock}
+          />
         </ToastProvider>,
       )
+
       await user.type(
         screen.getByLabelText('Nome do Produto*'),
         'Produto Teste',
@@ -99,6 +135,8 @@ describe('RegisterProduct', () => {
       expect(
         screen.getByText('Produto cadastrado com sucesso!'),
       ).toBeInTheDocument()
+      expect(setIsModalOpenMock).toHaveBeenCalledTimes(1)
+      expect(setIsModalOpenMock).toHaveBeenCalledWith(false)
     })
   })
 })
