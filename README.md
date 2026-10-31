@@ -50,8 +50,6 @@ Em 2025–2026, retomei a prática técnica com foco em **confiança via testes*
 | Stryker Mutator            | ^9.6.1  | Mutation testing                             |
 | ESLint                     | ^9      | Lint (com `eslint-config-next`)             |
 
-> Versões extraídas do `package.json` do repo.
-
 ---
 
 ## 📁 Estrutura
@@ -172,8 +170,6 @@ Acesse `http://localhost:3000`
 | `npm run test:mutation`   | Rodar Stryker mutation testing (lento; minutos)                 |
 | `npm run test:mutation:ci`| Stryker com reporters `clear-text`, `progress` e `html` (CI)    |
 
-> ⚠️ **Mutation testing é caro:** Stryker faz N runs de Jest (uma por mutação). Em projetos pequenos pode levar minutos; em projetos grandes, dezenas de minutos. Rode localmente quando for validar qualidade de testes, não no loop de dev.
-
 ---
 
 ## 🧬 Fluxo TDD praticado
@@ -200,19 +196,6 @@ Para adaptar este projeto ao seu próprio estudo:
 3. **Feedback:** Edite `src/context/ToastContext.tsx` para mudar como feedback aparece
 4. **Estilos:** Modifique `src/app/globals.css` (Tailwind 4 via `@theme` — não há `tailwind.config.ts`)
 5. **Stryker:** Edite `stryker.config.json` para mutar apenas arquivos específicos ou ajustar thresholds
-
----
-
-## 📊 Métricas esperadas
-
-| Métrica                     | Alvo                              | Como medir                |
-| --------------------------- | --------------------------------- | ------------------------- |
-| Jest coverage               | ≥ 90% (statements, branches)      | `npm run test:coverage`   |
-| Stryker mutation score      | ≥ 80%                             | `npm run test:mutation`   |
-| Build time                  | < 5s                              | `npm run build`           |
-| Bundle JS                   | < 200 KB                          | `next build` output       |
-
-> Alvos são referências para projeto de estudo; ajuste conforme a maturidade do projeto. Mutation score é mais relevante que coverage para validar qualidade real dos testes.
 
 ---
 
